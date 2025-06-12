@@ -1,0 +1,31 @@
+[1mdiff --git a/cloudbuild.yaml b/cloudbuild.yaml[m
+[1mindex 4c694d0..5298849 100644[m
+[1m--- a/cloudbuild.yaml[m
+[1m+++ b/cloudbuild.yaml[m
+[36m@@ -8,12 +8,12 @@[m [msteps:[m
+   # Step 2: Build the Docker image for the Go application[m
+   - name: 'gcr.io/cloud-builders/docker'[m
+     id: 'Build Docker image'[m
+[31m-    args: ['build', '-t', 'us-west1-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:<version>', '.'][m
+[32m+[m[32m    args: ['build', '-t', 'us-west1-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:v1.0', '.'][m
+ [m
+   # Step 3: Push the Docker image to Artifact Registry[m
+   - name: 'gcr.io/cloud-builders/docker'[m
+     id: 'Push Docker image'[m
+[31m-    args: ['push', 'us-west1-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:<version>'][m
+[32m+[m[32m    args: ['push', 'us-west1-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:v1.0'][m
+ [m
+   # Step 4: Apply the production deployment YAML file to the production namespace[m
+   - name: 'gcr.io/cloud-builders/kubectl'[m
+[1mdiff --git a/prod/deployment.yaml b/prod/deployment.yaml[m
+[1mindex c1d5096..9babbc7 100644[m
+[1m--- a/prod/deployment.yaml[m
+[1m+++ b/prod/deployment.yaml[m
+[36m@@ -14,6 +14,6 @@[m [mspec:[m
+     spec:[m
+       containers:[m
+       - name: production-container[m
+[31m-        image: <todo>[m
+[32m+[m[32m        image: gcr.io/qwiklabs-gcp-00-410fc85a4171/prod-image:v1.0[m
+         ports:[m
+         - containerPort: 8080[m
